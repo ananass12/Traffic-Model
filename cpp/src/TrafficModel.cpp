@@ -6,33 +6,31 @@
 #include <sstream>
 #include <memory>
 
-using namespace std;
-
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        cerr << "Правильный запуск: ./traffic_model <input_file>\n";
+        std::cerr << "Правильный запуск: ./traffic_model <input_file>\n";
         return 1;
     }
 
-    ifstream input(argv[1]);
-
+    std::ifstream input(argv[1]);
     if (!input.is_open()) {
-        cerr << "Ошибка открытия файла\n";
+        std::cerr << "Ошибка открытия файла\n";
         return 1;
     }
 
     double simulationTime;
-    string modelLine;
+    std::string line;
 
-    getline(input, modelLine);
-    simulationTime = stod(modelLine);
-    getline(input, modelLine);
-    stringstream ss(modelLine);
-    string modelName;
+    std::getline(input, line);
+    simulationTime = std::stod(line);
+
+    std::getline(input, line);
+    std::stringstream ss(line);
+    std::string modelName;
 
     ss >> modelName;
 
-    unique_ptr<TrafficModel> model;
+    std::unique_ptr<TrafficModel> model;
 
     if (modelName == "uniform:") {
         double interval;
@@ -40,7 +38,10 @@ int main(int argc, char* argv[]) {
 
         ss >> interval >> packetSize;
 
-        model = make_unique<UniformTraffic>(interval, packetSize);
+        model = std::make_unique<UniformTraffic>(interval, packetSize);
+
+        model->generate(simulationTime, "../output/output_uniform.csv");
+        std::cout << "Трафик сгенерирован в output_uniform.csv\n";
 
     } else if (modelName == "poisson:") {
         double lambdaDelay;
@@ -48,15 +49,14 @@ int main(int argc, char* argv[]) {
 
         ss >> lambdaDelay >> lambdaSize;
 
-        model = make_unique<PoissonTraffic>(lambdaDelay, lambdaSize);
+        model = std::make_unique<PoissonTraffic>(lambdaDelay, lambdaSize);
+
+        model->generate(simulationTime, "../output/output_poisson.csv");
+        std::cout << "Трафик сгенерирован в output_poisson.csv\n";
 
     } else {
-        cerr << "Неизвестная модель трафика\n";
+        std::cerr << "Неизвестная модель\n";
         return 1;
     }
-
-    model->generate(simulationTime, "output.csv");
-    cout << "Трафик сгенерирован в output.csv\n";
-
     return 0;
 }

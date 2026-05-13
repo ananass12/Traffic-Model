@@ -3,32 +3,28 @@
 #include <fstream>
 #include <cmath>
 
-using namespace std;
+PoissonTraffic::PoissonTraffic(double lambdaDelay, double lambdaSize) : lambdaDelay(lambdaDelay), lambdaSize(lambdaSize), generator(std::random_device{}()) {}
 
-PoissonTraffic::PoissonTraffic(double lambdaDelay, double lambdaSize)
-    : lambdaDelay(lambdaDelay), lambdaSize(lambdaSize), generator(random_device{}()) {}
-
-void PoissonTraffic::generate(double simulationTime, const string& outputFile) {
-
-    ofstream file(outputFile);
+void PoissonTraffic::generate(double simulationTime, const std::string& outputFile) {
+    std::ofstream file(outputFile);
 
     file << "time,size\n";
 
-    exponential_distribution<double> delayDist(lambdaDelay);
-    exponential_distribution<double> sizeDist(lambdaSize);
+    std::exponential_distribution<double> distDelay(lambdaDelay);
+    std::exponential_distribution<double> distSize(lambdaSize);
 
     double currentTime = 0.0;
 
     while (currentTime <= simulationTime) {
 
-        int packetSize = static_cast<int>(round(sizeDist(generator)));
+        int packetSize = static_cast<int>(std::round(distSize(generator)));
 
         if (packetSize <= 0)
             packetSize = 1;
 
         file << currentTime << "," << packetSize << "\n";
 
-        currentTime += delayDist(generator);
+        currentTime += distDelay(generator);
     }
 
     file.close();

@@ -2,8 +2,6 @@
 
 #include "TrafficModel.h"
 
-using namespace std;
-
 class UniformTraffic : public TrafficModel {
 private:
     double interval;
@@ -12,5 +10,5 @@ private:
 public:
     UniformTraffic(double interval, int packetSize);
 
-    void generate(double simulationTime, const string& outputFile) override;
+    void generate(double simulationTime, const std::string& outputFile) override;
 };

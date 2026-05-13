@@ -2,14 +2,10 @@
 
 #include <fstream>
 
-using namespace std;
+UniformTraffic::UniformTraffic(double interval, int packetSize) : interval(interval), packetSize(packetSize) {}
 
-UniformTraffic::UniformTraffic(double interval, int packetSize)
-    : interval(interval), packetSize(packetSize) {}
-
-void UniformTraffic::generate(double simulationTime, const string& outputFile) {
-
-    ofstream file(outputFile);
+void UniformTraffic::generate(double simulationTime, const std::string& outputFile) {
+    std::ofstream file(outputFile);
 
     file << "time,size\n";
 

@@ -15,6 +15,12 @@ cmake ../cpp
 make
 ```
 
+После сборки будет создан исполняемый файл:
+
+```text
+build/traffic_model
+```
+
 ## Запуск
 
 Равномерная (Uniform) модель:
@@ -48,4 +54,22 @@ time,size
 0.0,512
 1.0,512
 2.0,512
+```
+где:
+
+- time — время прихода пакета
+- size — размер пакета
+
+## Анализ
+
+## Установка зависимостей
+
+```bash
+pip install -r requirements.txt
+```
+Запуск кода Python
+
+```bash
+python3 ../python/analyze.py ../output/output_poisson.csv
+python3 ../python/analyze.py ../output/output_uniform.csv
 ```
